@@ -114,12 +114,15 @@ class COVID19(object):
         data = data["locations"]
         
         ranking_criteria = ['confirmed', 'deaths', 'recovered']
-        if rank_by is not None:
-            if rank_by not in ranking_criteria:
-                raise ValueError("Invalid ranking criteria. Expected one of: %s" % ranking_criteria)
+        
+        is_rank_by = rank_by is not None
 
+        if is_rank_by:
             ranked = sorted(data, key=lambda i: i['latest'][rank_by], reverse=True)
             data = ranked
+        
+        if rank_by not in ranking_criteria and is_rank_by:
+                raise ValueError("Invalid ranking criteria. Expected one of: %s" % ranking_criteria)
 
         return data
 
